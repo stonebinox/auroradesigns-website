@@ -6,7 +6,7 @@ export interface HeroData {
 }
 
 export const hero: HeroData = {
-  eyebrow: 'Aurora Designs',
+  eyebrow: 'Software architecture & engineering consultancy',
   headline: 'Forward-deployed engineers for AI-native systems.',
   subheadline:
     'We join your engineering team and own the messy, high-stakes work: AI agents and MCP integrations, backend architecture, and the systems around them — from discovery through production to adoption.',
