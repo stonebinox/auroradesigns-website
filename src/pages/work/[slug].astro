@@ -1,0 +1,238 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/ui/Container.astro';
+
+export async function getStaticPaths() {
+  const work = await getCollection('work');
+  return work.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.summary}>
+  <article class="case-study">
+    <Container>
+      <div class="case-study__header">
+        <a href="/#work" class="case-study__back">&#8592; work</a>
+        <h1 class="case-study__title">{entry.data.title}</h1>
+
+        <dl class="case-study__meta">
+          <div class="case-study__meta-item">
+            <dt>Client</dt>
+            <dd>{entry.data.client}</dd>
+          </div>
+          <div class="case-study__meta-item">
+            <dt>Industry</dt>
+            <dd>{entry.data.industry}</dd>
+          </div>
+          <div class="case-study__meta-item">
+            <dt>Year</dt>
+            <dd>{entry.data.year}</dd>
+          </div>
+          <div class="case-study__meta-item">
+            <dt>Role</dt>
+            <dd>{entry.data.role}</dd>
+          </div>
+        </dl>
+
+        <ul class="case-study__stack" aria-label="Technology stack" role="list">
+          {entry.data.stack.map((tech) => (
+            <li class="case-study__chip">{tech}</li>
+          ))}
+        </ul>
+
+        <ul class="case-study__tags" aria-label="Tags" role="list">
+          {entry.data.tags.map((tag) => (
+            <li class="case-study__tag">{tag}</li>
+          ))}
+        </ul>
+
+        <p class="case-study__summary">{entry.data.summary}</p>
+
+        {entry.data.metrics && entry.data.metrics.length > 0 && (
+          <dl class="case-study__metrics">
+            {entry.data.metrics.map((metric) => (
+              <div class="case-study__metric">
+                <dt class="case-study__metric-label">{metric.label}</dt>
+                <dd class="case-study__metric-value">{metric.value}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+      </div>
+
+      <div class="case-study__body">
+        <Content />
+      </div>
+    </Container>
+  </article>
+</BaseLayout>
+
+<style>
+  .case-study {
+    padding-block: var(--space-9);
+  }
+
+  /* ─── Header ─── */
+  .case-study__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    max-width: 65ch;
+    border-bottom: var(--border-width) solid var(--border);
+    padding-bottom: var(--space-8);
+    margin-bottom: var(--space-8);
+  }
+
+  .case-study__back {
+    font-family: var(--font-mono);
+    font-size: var(--fs-2);
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    transition: color var(--dur) var(--ease);
+  }
+
+  .case-study__back:hover {
+    color: var(--accent-dim);
+  }
+
+  .case-study__back:focus-visible {
+    border-radius: var(--radius-sm);
+  }
+
+  .case-study__title {
+    font-size: var(--fs-7);
+    color: var(--text);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+  }
+
+  /* ─── Metadata ─── */
+  .case-study__meta {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4) var(--space-6);
+  }
+
+  @media (min-width: 640px) {
+    .case-study__meta {
+      grid-template-columns: repeat(4, auto);
+    }
+  }
+
+  .case-study__meta-item dt {
+    font-family: var(--font-mono);
+    font-size: var(--fs-1);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: var(--space-1);
+  }
+
+  .case-study__meta-item dd {
+    font-size: var(--fs-3);
+    color: var(--text);
+  }
+
+  /* ─── Stack chips ─── */
+  .case-study__stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .case-study__chip {
+    font-family: var(--font-mono);
+    font-size: var(--fs-1);
+    color: var(--muted);
+    background: var(--surface);
+    border: var(--border-width) solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-1) var(--space-3);
+  }
+
+  /* ─── Tags ─── */
+  .case-study__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .case-study__tag {
+    font-family: var(--font-mono);
+    font-size: var(--fs-1);
+    color: var(--accent);
+    border: var(--border-width) solid color-mix(in srgb, var(--accent) 30%, transparent);
+    border-radius: var(--radius-sm);
+    padding: var(--space-1) var(--space-3);
+  }
+
+  /* ─── Summary ─── */
+  .case-study__summary {
+    font-size: var(--fs-4);
+    color: var(--muted);
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+  }
+
+  /* ─── Metrics ─── */
+  .case-study__metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+  }
+
+  .case-study__metric {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .case-study__metric-label {
+    font-family: var(--font-mono);
+    font-size: var(--fs-1);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .case-study__metric-value {
+    font-family: var(--font-mono);
+    font-size: var(--fs-6);
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  /* ─── Body prose ─── */
+  .case-study__body {
+    max-width: 65ch;
+  }
+
+  .case-study__body :global(h2) {
+    font-family: var(--font-mono);
+    font-size: var(--fs-2);
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    text-transform: lowercase;
+    margin-top: var(--space-7);
+    margin-bottom: var(--space-4);
+  }
+
+  .case-study__body :global(p) {
+    font-size: var(--fs-3);
+    color: var(--muted);
+    line-height: 1.75;
+    overflow-wrap: anywhere;
+  }
+
+  .case-study__body :global(p + p) {
+    margin-top: var(--space-4);
+  }
+</style>

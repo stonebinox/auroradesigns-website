@@ -1,9 +1,17 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/ui/Container.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import { hero } from '../data/hero';
 import { howWeWork } from '../data/how-we-work';
+import { sections } from '../data/sections';
+
+const allWork = await getCollection('work');
+const work = allWork.sort((a, b) => {
+  if (a.data.order !== b.data.order) return a.data.order - b.data.order;
+  return a.data.title.localeCompare(b.data.title);
+});
 ---
 
 <BaseLayout
@@ -46,10 +54,43 @@ import { howWeWork } from '../data/how-we-work';
   <section id="work" aria-labelledby="work-heading">
     <Container>
       <SectionHeading index="02" label="selected work">
-        <h2 id="work-heading" class="section-placeholder">
-          Section built in a later task
-        </h2>
+        <h2 id="work-heading">{sections.work.heading}</h2>
       </SectionHeading>
+      {work.length > 0 ? (
+        <div class:list={['work-grid', { 'work-grid--multi': work.length >= 2 }]}>
+          {work.map((entry) => (
+            <article
+              class:list={['work-card', { 'work-card--featured': entry.data.featured }]}
+              data-reveal
+            >
+              <a href={`/work/${entry.id}`} class="work-card__link">
+                <p class="work-card__meta">
+                  {entry.data.client} · {entry.data.industry} · {entry.data.year}
+                </p>
+                <h3 class="work-card__title">{entry.data.title}</h3>
+                <p class="work-card__summary">{entry.data.summary}</p>
+                <ul class="work-card__stack" aria-label="Technology stack" role="list">
+                  {entry.data.stack.map((tech) => (
+                    <li class="work-card__chip">{tech}</li>
+                  ))}
+                </ul>
+                {entry.data.metrics && entry.data.metrics.length > 0 && (
+                  <dl class="work-card__metrics">
+                    {entry.data.metrics.map((metric) => (
+                      <div class="work-card__metric">
+                        <dt class="work-card__metric-label">{metric.label}</dt>
+                        <dd class="work-card__metric-value">{metric.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                )}
+              </a>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <p class="work-empty">{sections.work.empty}</p>
+      )}
     </Container>
   </section>
 
@@ -256,16 +297,175 @@ import { howWeWork } from '../data/how-we-work';
     .hww__step:nth-child(4) { transition-delay: 240ms; }
   }
 
-  /* ─── Placeholder sections ─── */
+  /* ─── Section padding ─── */
   section[id] {
     padding-block: var(--space-9);
   }
 
+  /* ─── Placeholder sections ─── */
   .section-placeholder {
     font-family: var(--font-display);
     font-size: var(--fs-6);
     color: var(--muted);
     margin-top: var(--space-5);
+  }
+
+  /* ─── Selected work section ─── */
+  #work h2 {
+    font-family: var(--font-display);
+    font-size: var(--fs-6);
+    color: var(--text);
+    margin-top: var(--space-4);
+    overflow-wrap: anywhere;
+  }
+
+  .work-grid {
+    --stagger-1: 0ms;
+    --stagger-2: 80ms;
+    --stagger-3: 160ms;
+    --stagger-4: 240ms;
+    --stagger-5: 320ms;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+    margin-top: var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .work-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .work-grid--multi .work-card--featured {
+      grid-column: span 2;
+    }
+  }
+
+  /* ─── Work card ─── */
+  .work-card {
+    --work-reveal-dur: 600ms;
+    background: var(--surface);
+    border: var(--border-width) solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition:
+      opacity var(--work-reveal-dur) var(--ease),
+      border-color var(--dur) var(--ease),
+      transform var(--work-reveal-dur) var(--ease),
+      box-shadow var(--dur) var(--ease);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .work-card:nth-child(1) { transition-delay: var(--stagger-1); }
+    .work-card:nth-child(2) { transition-delay: var(--stagger-2); }
+    .work-card:nth-child(3) { transition-delay: var(--stagger-3); }
+    .work-card:nth-child(4) { transition-delay: var(--stagger-4); }
+    .work-card:nth-child(5) { transition-delay: var(--stagger-5); }
+  }
+
+  /* After reveal: fast hover transitions, delay reset */
+  .work-card.is-revealed {
+    transition:
+      border-color var(--dur) var(--ease) 0ms,
+      transform var(--dur) var(--ease) 0ms,
+      box-shadow var(--dur) var(--ease) 0ms;
+  }
+
+  .work-card--featured {
+    --work-card-glow: color-mix(in srgb, var(--accent) 8%, transparent);
+    --work-card-glow-size: 2rem;
+    box-shadow: 0 0 var(--work-card-glow-size) 0 var(--work-card-glow);
+  }
+
+  .work-card:hover,
+  .work-card:focus-within {
+    border-color: var(--accent);
+    transform: translateY(calc(var(--space-1) * -1));
+  }
+
+  .work-card:focus-within {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .work-card__link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    height: 100%;
+  }
+
+  .work-card__meta {
+    font-family: var(--font-mono);
+    font-size: var(--fs-2);
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  .work-card__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-5);
+    color: var(--text);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+
+  .work-card__summary {
+    font-size: var(--fs-3);
+    color: var(--muted);
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+    flex: 1;
+  }
+
+  .work-card__stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .work-card__chip {
+    font-family: var(--font-mono);
+    font-size: var(--fs-1);
+    color: var(--muted);
+    background: var(--bg);
+    border: var(--border-width) solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: var(--space-1) var(--space-2);
+  }
+
+  .work-card__metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
+    margin-top: var(--space-2);
+  }
+
+  .work-card__metric {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .work-card__metric-value {
+    font-family: var(--font-mono);
+    font-size: var(--fs-4);
+    color: var(--accent);
+  }
+
+  .work-card__metric-label {
+    font-family: var(--font-mono);
+    font-size: var(--fs-1);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .work-empty {
+    font-size: var(--fs-3);
+    color: var(--muted);
+    margin-top: var(--space-6);
   }
 </style>
 
