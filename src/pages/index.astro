@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/ui/Container.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import { hero } from '../data/hero';
+import { howWeWork } from '../data/how-we-work';
 ---
 
 <BaseLayout
@@ -27,10 +28,17 @@ import { hero } from '../data/hero';
   <section id="how-we-work" aria-labelledby="how-we-work-heading">
     <Container>
       <SectionHeading index="01" label="how we work">
-        <h2 id="how-we-work-heading" class="section-placeholder">
-          Section built in a later task
-        </h2>
+        <h2 id="how-we-work-heading">{howWeWork.heading}</h2>
       </SectionHeading>
+      <ol class="hww__steps">
+        {howWeWork.steps.map((step) => (
+          <li class="hww__step" data-reveal>
+            <p class="hww__label">{step.index} / {step.label}</p>
+            <h3 class="hww__title">{step.title}</h3>
+            <p class="hww__desc">{step.description}</p>
+          </li>
+        ))}
+      </ol>
     </Container>
   </section>
 
@@ -179,6 +187,73 @@ import { hero } from '../data/hero';
       opacity: 1;
       transform: none;
     }
+  }
+
+  /* ─── How we work section ─── */
+  #how-we-work {
+    --hero-reveal-dur: 600ms;
+  }
+
+  #how-we-work h2 {
+    font-family: var(--font-display);
+    font-size: var(--fs-6);
+    color: var(--text);
+    margin-top: var(--space-4);
+    overflow-wrap: anywhere;
+  }
+
+  .hww__steps {
+    --hww-label-col: 8rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-top: var(--space-8);
+  }
+
+  .hww__step {
+    border-top: var(--border-width) solid var(--border);
+    padding-block: var(--space-7);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .hww__label {
+    font-family: var(--font-mono);
+    font-size: var(--fs-2);
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .hww__title {
+    font-family: var(--font-display);
+    font-size: var(--fs-5);
+    color: var(--text);
+    overflow-wrap: anywhere;
+  }
+
+  .hww__desc {
+    font-size: var(--fs-3);
+    color: var(--muted);
+    max-width: 60ch;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+  }
+
+  @media (min-width: 768px) {
+    .hww__step {
+      display: grid;
+      grid-template-columns: var(--hww-label-col) 1fr 1fr;
+      gap: var(--space-6);
+      align-items: start;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hww__step:nth-child(1) { transition-delay: 0ms; }
+    .hww__step:nth-child(2) { transition-delay: 80ms; }
+    .hww__step:nth-child(3) { transition-delay: 160ms; }
+    .hww__step:nth-child(4) { transition-delay: 240ms; }
   }
 
   /* ─── Placeholder sections ─── */
