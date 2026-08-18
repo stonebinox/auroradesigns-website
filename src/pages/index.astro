@@ -6,6 +6,7 @@ import SectionHeading from '../components/ui/SectionHeading.astro';
 import { hero } from '../data/hero';
 import { howWeWork } from '../data/how-we-work';
 import { sections } from '../data/sections';
+import { site } from '../data/site';
 
 const allWork = await getCollection('work');
 const work = allWork.sort((a, b) => {
@@ -148,10 +149,16 @@ function statusLabel(status: 'live' | 'building' | 'private'): string {
   <section id="contact" aria-labelledby="contact-heading">
     <Container>
       <SectionHeading index="04" label="contact">
-        <h2 id="contact-heading" class="section-placeholder">
-          Section built in a later task
-        </h2>
+        <h2 id="contact-heading">{sections.contact.heading}</h2>
       </SectionHeading>
+      <div class="contact__content" data-reveal>
+        <p class="contact__body">{sections.contact.body}</p>
+        <ul class="contact__links">
+          <li><a class="contact__email" href={`mailto:${site.email}`}>{site.email}</a></li>
+          <li><a class="contact__phone" href={site.phone.href}>{site.phone.display}</a></li>
+          <li><span class="contact__location">{site.location}</span></li>
+        </ul>
+      </div>
     </Container>
   </section>
 </BaseLayout>
@@ -667,6 +674,84 @@ function statusLabel(status: 'live' | 'building' | 'private'): string {
     font-size: var(--fs-3);
     color: var(--muted);
     margin-top: var(--space-6);
+  }
+
+  /* ─── Contact section ─── */
+  #contact {
+    --contact-reveal-dur: 600ms;
+    --hero-reveal-dur: var(--contact-reveal-dur);
+  }
+
+  #contact h2 {
+    font-family: var(--font-display);
+    font-size: var(--fs-6);
+    color: var(--text);
+    margin-top: var(--space-4);
+    overflow-wrap: anywhere;
+  }
+
+  .contact__content {
+    margin-top: var(--space-8);
+  }
+
+  .contact__body {
+    font-size: var(--fs-3);
+    color: var(--muted);
+    max-width: 60ch;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+  }
+
+  .contact__links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-top: var(--space-7);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .contact__email {
+    font-family: var(--font-mono);
+    font-size: var(--fs-4);
+    color: var(--accent);
+    text-decoration: none;
+    transition: color var(--dur) var(--ease);
+  }
+
+  .contact__email:hover {
+    color: var(--accent-dim);
+  }
+
+  .contact__email:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .contact__phone {
+    font-family: var(--font-mono);
+    font-size: var(--fs-2);
+    color: var(--text);
+    text-decoration: none;
+    transition: color var(--dur) var(--ease);
+  }
+
+  .contact__phone:hover {
+    color: var(--accent);
+  }
+
+  .contact__phone:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .contact__location {
+    font-family: var(--font-mono);
+    font-size: var(--fs-2);
+    color: var(--muted);
   }
 </style>
 
