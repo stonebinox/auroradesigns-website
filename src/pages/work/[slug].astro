@@ -55,6 +55,17 @@ const { Content } = await render(entry);
 
         <p class="case-study__summary">{entry.data.summary}</p>
 
+        {entry.data.url && (
+          <a
+            class="case-study__visit"
+            href={entry.data.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Visit site &#8599;
+          </a>
+        )}
+
         {entry.data.metrics && entry.data.metrics.length > 0 && (
           <dl class="case-study__metrics">
             {entry.data.metrics.map((metric) => (
@@ -180,6 +191,26 @@ const { Content } = await render(entry);
     color: var(--muted);
     line-height: 1.65;
     overflow-wrap: anywhere;
+  }
+
+  /* ─── Visit link ─── */
+  .case-study__visit {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--fs-2);
+    color: var(--accent);
+    text-decoration: none;
+    transition: color var(--dur) var(--ease);
+  }
+
+  .case-study__visit:hover {
+    color: var(--accent-dim);
+  }
+
+  .case-study__visit:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 
   /* ─── Metrics ─── */

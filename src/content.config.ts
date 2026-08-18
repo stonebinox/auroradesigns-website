@@ -13,6 +13,7 @@ const work = defineCollection({
     stack: z.array(z.string().min(1)).min(1),
     tags: z.array(z.string().min(1)).min(1),
     summary: z.string().min(1),
+    url: z.url().optional(),
     metrics: z
       .array(
         z.object({
