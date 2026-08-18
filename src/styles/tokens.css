@@ -1,0 +1,55 @@
+:root {
+  /* Colors */
+  --bg: #0A0A0B;
+  --surface: #111114;
+  --border: #1E1F24;
+  --text: #EDEDEF;
+  --muted: #8A8F98;
+  --accent: #3DD6A0;
+  --accent-dim: #2AA37A;
+
+  /* Fonts */
+  --font-display: 'Space Grotesk Variable', 'Space Grotesk', sans-serif;
+  --font-body: 'Inter Variable', 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', monospace;
+
+  /* Type scale */
+  --fs-1: 0.8rem;
+  --fs-2: 0.9rem;
+  --fs-3: 1rem;
+  --fs-4: 1.25rem;
+  --fs-5: 1.5rem;
+  --fs-6: clamp(1.5rem, 3vw, 2rem);
+  --fs-7: clamp(2rem, 5vw, 3rem);
+  --fs-8: clamp(2.5rem, 7vw, 4.5rem);
+
+  /* Spacing */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.5rem;    /* 24px */
+  --space-6: 2rem;      /* 32px */
+  --space-7: 3rem;      /* 48px */
+  --space-8: 4rem;      /* 64px */
+  --space-9: 6rem;      /* 96px */
+  --space-10: 8rem;     /* 128px */
+
+  /* Layout */
+  --maxw: 1200px;
+  --gutter: clamp(1rem, 4vw, 2rem);
+
+  /* Focus */
+  --focus-ring: 0 0 0 3px var(--accent);
+
+  /* Border */
+  --border-width: 1px;
+
+  /* Motion */
+  --dur: 200ms;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Radius */
+  --radius: 4px;
+  --radius-sm: 2px;
+}

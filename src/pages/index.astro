@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+---
+
+<BaseLayout
+  title="Aurora Designs"
+  description="Aurora Designs is a software architecture and engineering consultancy that embeds forward-deployed engineers with client teams."
+>
+  <!-- Hero region -->
+  <section class="hero" aria-labelledby="hero-heading">
+    <Container>
+      <h1 id="hero-heading" class="hero__placeholder">
+        Section built in a later task
+      </h1>
+    </Container>
+  </section>
+
+  <!-- How we work -->
+  <section id="how-we-work" aria-labelledby="how-we-work-heading">
+    <Container>
+      <SectionHeading index="01" label="how we work">
+        <h2 id="how-we-work-heading" class="section-placeholder">
+          Section built in a later task
+        </h2>
+      </SectionHeading>
+    </Container>
+  </section>
+
+  <!-- Selected work -->
+  <section id="work" aria-labelledby="work-heading">
+    <Container>
+      <SectionHeading index="02" label="selected work">
+        <h2 id="work-heading" class="section-placeholder">
+          Section built in a later task
+        </h2>
+      </SectionHeading>
+    </Container>
+  </section>
+
+  <!-- Products -->
+  <section id="products" aria-labelledby="products-heading">
+    <Container>
+      <SectionHeading index="03" label="products">
+        <h2 id="products-heading" class="section-placeholder">
+          Section built in a later task
+        </h2>
+      </SectionHeading>
+    </Container>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" aria-labelledby="contact-heading">
+    <Container>
+      <SectionHeading index="04" label="contact">
+        <h2 id="contact-heading" class="section-placeholder">
+          Section built in a later task
+        </h2>
+      </SectionHeading>
+    </Container>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    padding-block: var(--space-10);
+  }
+
+  .hero__placeholder {
+    font-family: var(--font-display);
+    font-size: var(--fs-7);
+    color: var(--muted);
+  }
+
+  section[id] {
+    padding-block: var(--space-9);
+  }
+
+  .section-placeholder {
+    font-family: var(--font-display);
+    font-size: var(--fs-6);
+    color: var(--muted);
+    margin-top: var(--space-5);
+  }
+</style>
