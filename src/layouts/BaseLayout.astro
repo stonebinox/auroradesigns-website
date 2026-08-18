@@ -12,18 +12,37 @@ import { site } from '../data/site';
 interface Props {
   title?: string;
   description?: string;
-  // Default OG image added in task ao1.7
   ogImage?: string;
+  ogType?: string;
 }
+
+const defaultDescription = 'Aurora Designs is a software architecture and engineering consultancy that embeds forward-deployed engineers with client teams.';
 
 const {
   title = site.brand,
-  description = 'Aurora Designs is a software architecture and engineering consultancy that embeds forward-deployed engineers with client teams.',
-  ogImage = undefined,
+  description = defaultDescription,
+  ogImage = '/og-default.png',
+  ogType = 'website',
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://auroradesignshq.com');
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? site.url);
 const pageTitle = title === site.brand ? site.brand : `${title} — ${site.brand}`;
+
+const orgJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.brand,
+  legalName: site.legalName,
+  url: site.url,
+  email: site.email,
+  telephone: '+916360058954',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Bangalore',
+    addressCountry: 'IN',
+  },
+  description: defaultDescription,
+};
 ---
 
 <!doctype html>
@@ -38,17 +57,17 @@ const pageTitle = title === site.brand ? site.brand : `${title} — ${site.brand
     <link rel="canonical" href={canonicalURL} />
 
     <!-- Open Graph -->
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
-    {ogImage && <meta property="og:image" content={new URL(ogImage, canonicalURL)} />}
+    <meta property="og:image" content={new URL(ogImage, canonicalURL)} />
 
     <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
-    {ogImage && <meta name="twitter:image" content={new URL(ogImage, canonicalURL)} />}
+    <meta name="twitter:image" content={new URL(ogImage, canonicalURL)} />
 
     <!-- Theme -->
     <meta name="theme-color" content="#0A0A0B" />
@@ -60,7 +79,11 @@ const pageTitle = title === site.brand ? site.brand : `${title} — ${site.brand
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Organization JSON-LD -->
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(orgJsonLd)} />
 
     <!-- JS-capability flag: set before body renders to avoid reveal flash -->
     <script is:inline>document.documentElement.classList.add('js')</script>

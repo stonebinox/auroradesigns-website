@@ -1,6 +1,7 @@
 export interface SiteData {
   brand: string;
   legalName: string;
+  url: string;
   email: string;
   phone: {
     display: string;
@@ -14,6 +15,7 @@ export interface SiteData {
 export const site: SiteData = {
   brand: 'Aurora Designs',
   legalName: 'Aurora Designs LLP',
+  url: 'https://www.auroradesignshq.com',
   email: 'contact@auroradesignshq.com',
   phone: {
     display: '+91 63600 58954',
