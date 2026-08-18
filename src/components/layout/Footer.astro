@@ -22,13 +22,6 @@ const year = new Date().getFullYear();
         <span class="site-footer__location site-footer__muted">{site.location}</span>
       </div>
 
-      {site.countries.length > 0 && (
-        <ul class="site-footer__countries" role="list" aria-label="Countries served">
-          {site.countries.map((country) => (
-            <li class="site-footer__country">{country}</li>
-          ))}
-        </ul>
-      )}
     </div>
   </div>
 </footer>
@@ -90,19 +83,6 @@ const year = new Date().getFullYear();
     color: var(--muted);
   }
 
-  .site-footer__countries {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2) var(--space-4);
-    list-style: none;
-  }
-
-  .site-footer__country {
-    font-family: var(--font-mono);
-    font-size: var(--fs-1);
-    color: var(--muted);
-  }
-
   @media (min-width: 768px) {
     .site-footer__inner {
       flex-direction: row;
@@ -112,6 +92,7 @@ const year = new Date().getFullYear();
 
     .site-footer__contact {
       align-items: flex-end;
+      text-align: right;
     }
   }
 
