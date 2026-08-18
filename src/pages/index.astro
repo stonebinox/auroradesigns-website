@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/ui/Container.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
+import { hero } from '../data/hero';
 ---
 
 <BaseLayout
@@ -11,9 +12,14 @@ import SectionHeading from '../components/ui/SectionHeading.astro';
   <!-- Hero region -->
   <section class="hero" aria-labelledby="hero-heading">
     <Container>
-      <h1 id="hero-heading" class="hero__placeholder">
-        Section built in a later task
-      </h1>
+      <div class="hero__content" data-reveal>
+        <p class="hero__eyebrow">{hero.eyebrow}</p>
+        <div class="hero__heading-wrap">
+          <h1 id="hero-heading" class="hero__heading">{hero.headline}</h1>
+        </div>
+        <p class="hero__summary">{hero.subheadline}</p>
+        <a class="hero__cta" href={hero.cta.href}>{hero.cta.label}</a>
+      </div>
     </Container>
   </section>
 
@@ -63,19 +69,119 @@ import SectionHeading from '../components/ui/SectionHeading.astro';
 </BaseLayout>
 
 <style>
+  /* ─── Hero section ─── */
   .hero {
+    --hero-bloom-w: 18rem;
+    --hero-bloom-h: 12rem;
+    --hero-bloom-blur: 40px;
+    --hero-cta-ring-inner: 2px;
+    --hero-cta-ring-outer: 5px;
+    --hero-reveal-dur: 600ms;
     min-height: 70vh;
     display: flex;
     align-items: center;
     padding-block: var(--space-10);
   }
 
-  .hero__placeholder {
-    font-family: var(--font-display);
-    font-size: var(--fs-7);
-    color: var(--muted);
+  .hero__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    min-width: 0;
+    width: 100%;
   }
 
+  /* Eyebrow */
+  .hero__eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--fs-2);
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    min-width: 0;
+  }
+
+  /* Heading wrap — contains the accent bloom behind the heading */
+  .hero__heading-wrap {
+    position: relative;
+    isolation: isolate;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .hero__heading-wrap::before {
+    content: '';
+    position: absolute;
+    top: calc(var(--space-6) * -1);
+    left: calc(var(--space-6) * -1);
+    width: var(--hero-bloom-w);
+    height: var(--hero-bloom-h);
+    background: radial-gradient(
+      ellipse at 30% 40%,
+      color-mix(in srgb, var(--accent) 16%, transparent),
+      transparent 70%
+    );
+    filter: blur(var(--hero-bloom-blur));
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  /* Heading */
+  .hero__heading {
+    font-size: var(--fs-8);
+    max-width: 20ch;
+    overflow-wrap: anywhere;
+  }
+
+  /* Summary */
+  .hero__summary {
+    font-size: var(--fs-4);
+    color: var(--muted);
+    max-width: 60ch;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+
+  /* CTA — accent filled, mono label */
+  .hero__cta {
+    display: inline-block;
+    align-self: flex-start;
+    background: var(--accent);
+    color: var(--bg);
+    font-family: var(--font-mono);
+    font-size: var(--fs-2);
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius);
+    transition: background var(--dur) var(--ease);
+  }
+
+  .hero__cta:hover {
+    background: var(--accent-dim);
+  }
+
+  /* Override global focus ring for accent button — use bg gap so ring is visible */
+  .hero__cta:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 var(--hero-cta-ring-inner) var(--bg), 0 0 0 var(--hero-cta-ring-outer) var(--accent);
+    border-radius: var(--radius);
+  }
+
+  /* ─── Scroll reveal — progressive enhancement only ─── */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) [data-reveal] {
+      opacity: 0;
+      transform: translateY(var(--space-2));
+      transition: opacity var(--hero-reveal-dur) var(--ease), transform var(--hero-reveal-dur) var(--ease);
+    }
+
+    :global(.js) [data-reveal].is-revealed {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* ─── Placeholder sections ─── */
   section[id] {
     padding-block: var(--space-9);
   }
@@ -87,3 +193,21 @@ import SectionHeading from '../components/ui/SectionHeading.astro';
     margin-top: var(--space-5);
   }
 </style>
+
+<script>
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+            observer.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
+  }
+</script>
