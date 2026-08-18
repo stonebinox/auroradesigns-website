@@ -172,6 +172,7 @@ function statusLabel(status: 'live' | 'building' | 'private'): string {
     --hero-cta-ring-inner: 2px;
     --hero-cta-ring-outer: 5px;
     --hero-reveal-dur: 600ms;
+    --hero-bloom-travel: clamp(6rem, 30vw, 22rem);
     min-height: 70vh;
     display: flex;
     align-items: center;
@@ -219,6 +220,18 @@ function statusLabel(status: 'live' | 'building' | 'private'): string {
     filter: blur(var(--hero-bloom-blur));
     pointer-events: none;
     z-index: -1;
+  }
+
+  @keyframes hero-bloom-sweep {
+    from { transform: translateX(0); }
+    to   { transform: translateX(var(--hero-bloom-travel)); }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__heading-wrap::before {
+      animation: hero-bloom-sweep 9s ease-in-out infinite alternate;
+      will-change: transform;
+    }
   }
 
   /* Heading */
