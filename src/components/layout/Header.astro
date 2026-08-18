@@ -6,7 +6,7 @@ import { navigation } from '../../data/navigation';
 <header class="site-header" role="banner">
   <nav class="site-nav" aria-label="Main navigation">
     <a href="/" class="site-nav__brand" aria-label=`${site.brand} home`>
-      {site.brand}
+      <img src="/aurora-logo.png" alt={site.brand} class="site-nav__brand-logo" width="1130" height="603" />
     </a>
 
     <!-- Desktop nav -->
@@ -76,6 +76,12 @@ import { navigation } from '../../data/navigation';
     text-decoration: none;
     white-space: nowrap;
     margin-right: auto;
+  }
+
+  .site-nav__brand-logo {
+    height: 2.25rem;
+    width: auto;
+    display: block;
   }
 
   .site-nav__brand:hover {
