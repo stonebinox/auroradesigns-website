@@ -1,12 +1,15 @@
 ---
 import { site } from '../../data/site';
 import { navigation } from '../../data/navigation';
+import AuroraMark from '../ui/AuroraMark.astro';
 ---
 
 <header class="site-header" role="banner">
   <nav class="site-nav" aria-label="Main navigation">
     <a href="/" class="site-nav__brand" aria-label=`${site.brand} home`>
-      <img src="/aurora-logo.png" alt={site.brand} class="site-nav__brand-logo" width="1130" height="603" />
+      <AuroraMark class="site-nav__brand-mark" />
+      <span class="site-nav__brand-rule" aria-hidden="true"></span>
+      <span class="site-nav__brand-name">{site.brand}</span>
     </a>
 
     <!-- Desktop nav -->
@@ -69,24 +72,44 @@ import { navigation } from '../../data/navigation';
   }
 
   .site-nav__brand {
-    font-family: var(--font-mono);
-    font-size: var(--fs-3);
-    font-weight: 700;
-    color: var(--text);
-    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
     white-space: nowrap;
+    padding: var(--space-1) var(--space-2);
+    margin-left: calc(-1 * var(--space-2));
     margin-right: auto;
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: var(--text);
   }
 
-  .site-nav__brand-logo {
-    height: 2.25rem;
+  .site-nav__brand :global(.site-nav__brand-mark) {
+    height: var(--space-5);
     width: auto;
+    flex-shrink: 0;
     display: block;
   }
 
-  .site-nav__brand:hover {
-    color: var(--accent);
+  .site-nav__brand-rule {
+    width: var(--border-width);
+    height: var(--space-5);
+    background: var(--muted);
+    opacity: 0.5;
+    flex-shrink: 0;
+  }
+
+  .site-nav__brand-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--fs-3);
+    letter-spacing: -0.02em;
+    line-height: 1;
     transition: color var(--dur) var(--ease);
+  }
+
+  .site-nav__brand:hover .site-nav__brand-name {
+    color: var(--accent);
   }
 
   .site-nav__links {
@@ -201,7 +224,7 @@ import { navigation } from '../../data/navigation';
     margin-top: var(--space-4);
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 960px) {
     .site-nav__links {
       display: flex;
     }
@@ -216,6 +239,7 @@ import { navigation } from '../../data/navigation';
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .site-nav__brand-name,
     .site-nav__link,
     .site-nav__cta,
     .site-nav__mobile-link,

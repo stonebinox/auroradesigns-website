@@ -1,0 +1,31 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<svg
+  class:list={['aurora-mark', className]}
+  viewBox="-54 0 108 96"
+  aria-hidden="true"
+  focusable="false"
+>
+  <path class="aurora-mark__a" d="M0 0 L54 96 L27.67 81.19 L0 32 L-36 96 L-54 96 Z"></path>
+  <path class="aurora-mark__chevron" d="M0 56 L22.5 96 L13.5 96 L0 72 L-13.5 96 L-22.5 96 Z"></path>
+</svg>
+
+<style>
+  .aurora-mark {
+    flex-shrink: 0;
+    aspect-ratio: 108 / 96;
+  }
+
+  .aurora-mark__a {
+    fill: var(--text);
+  }
+
+  .aurora-mark__chevron {
+    fill: var(--accent);
+  }
+</style>

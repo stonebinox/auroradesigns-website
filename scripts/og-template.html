@@ -2,10 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
+    @font-face {
+      font-family: 'Space Grotesk';
+      font-weight: 300 700;
+      src: url('../node_modules/@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2') format('woff2');
+    }
+    @font-face {
+      font-family: 'JetBrains Mono';
+      font-weight: 100 800;
+      src: url('../node_modules/@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2') format('woff2');
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
@@ -20,31 +28,54 @@
       justify-content: space-between;
     }
 
-    .eyebrow {
+    .lockup {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .lockup svg {
+      height: 88px;
+      width: auto;
+      aspect-ratio: 108 / 96;
+      display: block;
+    }
+
+    .lockup__name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 28px;
+      line-height: 1;
+      letter-spacing: 0.2em;
+      color: #EDEDEF;
+    }
+
+    .lockup__sub {
       font-family: 'JetBrains Mono', monospace;
       font-weight: 400;
-      font-size: 18px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #3DD6A0;
+      font-size: 16px;
+      line-height: 1;
+      letter-spacing: 0.6em;
+      color: #8A8F98;
+      margin-top: -8px;
     }
 
     .headline {
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 700;
-      font-size: 68px;
+      font-size: 60px;
       line-height: 1.1;
       color: #EDEDEF;
       letter-spacing: -0.02em;
       max-width: 900px;
-      margin-top: 40px;
     }
 
     .rule {
       width: 80px;
       height: 3px;
       background: #3DD6A0;
-      margin-top: 48px;
+      margin-top: 32px;
     }
 
     .footer {
@@ -53,15 +84,23 @@
       font-size: 16px;
       color: #8A8F98;
       letter-spacing: 0.04em;
+      margin-top: 24px;
     }
   </style>
 </head>
 <body>
+  <div class="lockup">
+    <svg viewBox="-54 0 108 96" aria-hidden="true">
+      <path fill="#EDEDEF" d="M0 0 L54 96 L27.67 81.19 L0 32 L-36 96 L-54 96 Z"/>
+      <path fill="#3DD6A0" d="M0 56 L22.5 96 L13.5 96 L0 72 L-13.5 96 L-22.5 96 Z"/>
+    </svg>
+    <p class="lockup__name">AURORA</p>
+    <p class="lockup__sub">DESIGNS</p>
+  </div>
   <div>
-    <p class="eyebrow">Aurora Designs</p>
     <h1 class="headline">Forward-deployed engineers for AI-native systems.</h1>
     <div class="rule"></div>
+    <p class="footer">auroradesignshq.com</p>
   </div>
-  <p class="footer">auroradesignshq.com</p>
 </body>
 </html>
