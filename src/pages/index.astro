@@ -7,6 +7,7 @@ import { hero } from '../data/hero';
 import { howWeWork } from '../data/how-we-work';
 import { sections } from '../data/sections';
 import { site } from '../data/site';
+import { joinNames } from '../lib/format';
 
 const allWork = await getCollection('work');
 const work = allWork.sort((a, b) => {
@@ -20,6 +21,11 @@ const products = allProducts.sort((a, b) => {
   return a.data.name.localeCompare(b.data.name);
 });
 
+const NBSP = '\u00A0';
+const foundersLine = `${sections.about.foundedByPrefix} ${joinNames(
+  site.founders.map((f) => f.name.replace(/ /g, NBSP)),
+)}.`;
+
 function statusLabel(status: 'live' | 'building' | 'private'): string {
   if (status === 'live') return 'Live';
   if (status === 'building') return 'Building';
@@ -27,10 +33,7 @@ function statusLabel(status: 'live' | 'building' | 'private'): string {
 }
 ---
 
-<BaseLayout
-  title="Aurora Designs"
-  description="Aurora Designs is a software architecture and engineering consultancy that embeds forward-deployed engineers with client teams."
->
+<BaseLayout title={site.brand}>
   <!-- Hero region -->
   <section class="hero" aria-labelledby="hero-heading">
     <Container>
@@ -76,7 +79,7 @@ function statusLabel(status: 'live' | 'building' | 'private'): string {
               class:list={['work-card', { 'work-card--featured': entry.data.featured }]}
               data-reveal
             >
-              <a href={`/work/${entry.id}`} class="work-card__link">
+              <a href={`/work/${entry.id}/`} class="work-card__link">
                 <p class="work-card__meta">
                   {entry.data.client} · {entry.data.industry} · {entry.data.year}
                 </p>
@@ -145,10 +148,31 @@ function statusLabel(status: 'live' | 'building' | 'private'): string {
     </Container>
   </section>
 
+  <!-- About -->
+  <section id="about" aria-labelledby="about-heading">
+    <Container>
+      <SectionHeading index="04" label={sections.about.label}>
+        <h2 id="about-heading">{sections.about.heading}</h2>
+      </SectionHeading>
+      <div class="about__content" data-reveal>
+        <p class="about__entity">{site.entity}</p>
+        <p class="about__founders">{foundersLine}</p>
+        <ul class="about__services" aria-label={sections.about.servicesLabel} role="list">
+          {site.services.map((service) => (
+            <li class="about__service">
+              <h3 class="about__service-name">{service.name}</h3>
+              <p class="about__service-desc">{service.description}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </Container>
+  </section>
+
   <!-- Contact -->
   <section id="contact" aria-labelledby="contact-heading">
     <Container>
-      <SectionHeading index="04" label="contact">
+      <SectionHeading index="05" label="contact">
         <h2 id="contact-heading">{sections.contact.heading}</h2>
       </SectionHeading>
       <div class="contact__content" data-reveal>
@@ -691,6 +715,77 @@ function statusLabel(status: 'live' | 'building' | 'private'): string {
     font-size: var(--fs-3);
     color: var(--muted);
     margin-top: var(--space-6);
+  }
+
+  /* ─── About section ─── */
+  #about {
+    --hero-reveal-dur: 600ms;
+  }
+
+  #about h2 {
+    font-family: var(--font-display);
+    font-size: var(--fs-6);
+    color: var(--text);
+    margin-top: var(--space-4);
+    overflow-wrap: anywhere;
+  }
+
+  .about__content {
+    margin-top: var(--space-8);
+  }
+
+  .about__entity {
+    font-size: var(--fs-4);
+    color: var(--text);
+    max-width: 60ch;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+  }
+
+  .about__founders {
+    font-family: var(--font-mono);
+    font-size: var(--fs-2);
+    color: var(--muted);
+    margin-top: var(--space-4);
+  }
+
+  .about__services {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-top: var(--space-7);
+  }
+
+  .about__service {
+    border-top: var(--border-width) solid var(--border);
+    padding-block: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .about__service-name {
+    font-family: var(--font-display);
+    font-size: var(--fs-4);
+    color: var(--text);
+    overflow-wrap: anywhere;
+  }
+
+  .about__service-desc {
+    font-size: var(--fs-3);
+    color: var(--muted);
+    max-width: 60ch;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+  }
+
+  @media (min-width: 768px) {
+    .about__service {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-6);
+      align-items: start;
+    }
   }
 
   /* ─── Contact section ─── */

@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import { notFound } from '../data/sections';
+---
+
+<BaseLayout title={notFound.title} description={notFound.body} noindex>
+  <section class="not-found" aria-labelledby="not-found-heading">
+    <Container>
+      <SectionHeading index="404" label={notFound.label}>
+        <h1 id="not-found-heading" class="not-found__heading">{notFound.heading}</h1>
+      </SectionHeading>
+      <p class="not-found__body">{notFound.body}</p>
+      <a class="not-found__link" href="/">{notFound.cta}</a>
+    </Container>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    padding-block: var(--space-10);
+    min-height: 60vh;
+  }
+
+  .not-found__heading {
+    font-family: var(--font-display);
+    font-size: var(--fs-7);
+    color: var(--text);
+    overflow-wrap: anywhere;
+  }
+
+  .not-found__body {
+    font-size: var(--fs-3);
+    color: var(--muted);
+    max-width: 60ch;
+    line-height: 1.65;
+    margin-top: var(--space-6);
+  }
+
+  .not-found__link {
+    display: inline-block;
+    margin-top: var(--space-6);
+    font-family: var(--font-mono);
+    font-size: var(--fs-2);
+    color: var(--accent);
+    text-decoration: none;
+    transition: color var(--dur) var(--ease);
+  }
+
+  .not-found__link:hover {
+    color: var(--accent-dim);
+  }
+
+  .not-found__link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+</style>
