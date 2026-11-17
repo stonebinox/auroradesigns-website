@@ -231,7 +231,10 @@ export const site: SiteData = {
     },
     { name: 'Anusha Rao', jobTitle: 'Co-founder', sameAs: [] },
   ],
-  sameAs: ['https://www.instagram.com/auroradesignsai/'],
+  sameAs: [
+    'https://www.instagram.com/auroradesignsai/',
+    'https://linkedin.com/company/aurora-designs-llp/',
+  ],
   knowsAbout: [
     'AI agents',
     'Model Context Protocol (MCP)',
