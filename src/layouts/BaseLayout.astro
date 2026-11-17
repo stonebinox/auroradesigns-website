@@ -9,7 +9,7 @@ import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import { site } from '../data/site';
 import { buildGraph, serializeJsonLd } from '../lib/seo';
-import type { Crumb, JsonLdNode } from '../lib/seo';
+import type { Crumb, JsonLdNode, PageOptions } from '../lib/seo';
 
 interface Props {
   title?: string;
@@ -19,6 +19,7 @@ interface Props {
   noindex?: boolean;
   crumbs?: Crumb[];
   jsonLd?: JsonLdNode[];
+  page?: PageOptions;
 }
 
 const {
@@ -29,6 +30,7 @@ const {
   noindex = false,
   crumbs,
   jsonLd = [],
+  page,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? site.url);
@@ -41,6 +43,7 @@ const graph = buildGraph({
   description,
   crumbs: crumbs ?? [{ name: site.brand, url: `${site.url}/` }],
   extra: jsonLd,
+  page,
 });
 ---
 

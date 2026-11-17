@@ -1,0 +1,15 @@
+---
+import Container from './Container.astro';
+---
+
+<div class="page-shell">
+  <Container>
+    <slot />
+  </Container>
+</div>
+
+<style>
+  .page-shell {
+    padding-block: var(--space-9);
+  }
+</style>

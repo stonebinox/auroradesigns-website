@@ -94,9 +94,19 @@ export function breadcrumbNode(pageUrl: string, crumbs: Crumb[]): JsonLdNode {
   };
 }
 
-export function webPageNode(pageUrl: string, name: string, description: string): JsonLdNode {
+export interface PageOptions {
+  pageType?: string | string[];
+  mainEntityId?: string;
+}
+
+export function webPageNode(
+  pageUrl: string,
+  name: string,
+  description: string,
+  options: PageOptions = {},
+): JsonLdNode {
   return {
-    '@type': 'WebPage',
+    '@type': options.pageType ?? 'WebPage',
     '@id': `${pageUrl}#webpage`,
     url: pageUrl,
     name,
@@ -105,6 +115,20 @@ export function webPageNode(pageUrl: string, name: string, description: string):
     isPartOf: { '@id': ids.website },
     about: { '@id': ids.organization },
     breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+    ...(options.mainEntityId ? { mainEntity: { '@id': options.mainEntityId } } : {}),
+  };
+}
+
+export function faqNode(pageUrl: string, faqs: { q: string; a: string }[]): JsonLdNode {
+  return {
+    '@type': 'FAQPage',
+    '@id': `${pageUrl}#faq`,
+    isPartOf: { '@id': `${pageUrl}#webpage` },
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
   };
 }
 
@@ -134,9 +158,10 @@ export interface GraphInput {
   description: string;
   crumbs: Crumb[];
   extra?: JsonLdNode[];
+  page?: PageOptions;
 }
 
-export function buildGraph({ pageUrl, name, description, crumbs, extra = [] }: GraphInput): JsonLdNode {
+export function buildGraph({ pageUrl, name, description, crumbs, extra = [], page }: GraphInput): JsonLdNode {
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -144,7 +169,7 @@ export function buildGraph({ pageUrl, name, description, crumbs, extra = [] }: G
       websiteNode(),
       ...founderNodes(),
       ...serviceNodes(),
-      webPageNode(pageUrl, name, description),
+      webPageNode(pageUrl, name, description, page),
       breadcrumbNode(pageUrl, crumbs),
       ...extra,
     ],

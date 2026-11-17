@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageShell from '../components/ui/PageShell.astro';
+import PageHeader from '../components/ui/PageHeader.astro';
+import PageSection from '../components/ui/PageSection.astro';
+import CtaLink from '../components/ui/CtaLink.astro';
+import { faqPage, resolveFaqGroups } from '../data/faq';
+import { howWeWork } from '../data/how-we-work';
+import { site } from '../data/site';
+import { absoluteUrl, faqNode } from '../lib/seo';
+
+const groups = resolveFaqGroups();
+const allFaqs = groups.flatMap((g) => g.faqs);
+
+const pageUrl = absoluteUrl('/faq/');
+const crumbs = [
+  { name: site.brand, url: `${site.url}/` },
+  { name: faqPage.breadcrumb, url: pageUrl },
+];
+const jsonLd = [faqNode(pageUrl, allFaqs)];
+---
+
+<BaseLayout title={faqPage.title} description={faqPage.description} crumbs={crumbs} jsonLd={jsonLd}>
+  <PageShell>
+    <PageHeader label={faqPage.breadcrumb} title={faqPage.heading} answer={faqPage.description} />
+
+    {groups.map((group, i) => (
+      <PageSection id={`group-${i}`} heading={group.heading}>
+        <ul>
+          {group.faqs.map((f) => (
+            <li class="faq-item">
+              <h3>{f.q}</h3>
+              <p>{f.a}</p>
+            </li>
+          ))}
+        </ul>
+      </PageSection>
+    ))}
+
+    <CtaLink href={howWeWork.cta.href} label={howWeWork.cta.label} />
+  </PageShell>
+</BaseLayout>
+
+<style>
+  .faq-item {
+    margin-bottom: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+</style>

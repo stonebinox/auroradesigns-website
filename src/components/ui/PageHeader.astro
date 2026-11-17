@@ -1,0 +1,69 @@
+---
+interface Props {
+  label: string;
+  title: string;
+  answer: string;
+}
+
+const { label, title, answer } = Astro.props;
+---
+
+<header class="page-header">
+  <a href="/" class="page-header__back">&#8592; home</a>
+  <p class="page-header__label">{label}</p>
+  <h1 class="page-header__title">{title}</h1>
+  <p class="page-header__answer">{answer}</p>
+</header>
+
+<style>
+  .page-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    max-width: 65ch;
+    border-bottom: var(--border-width) solid var(--border);
+    padding-bottom: var(--space-8);
+    margin-bottom: var(--space-8);
+  }
+
+  .page-header__back,
+  .page-header__label {
+    font-family: var(--font-mono);
+    font-size: var(--fs-2);
+    letter-spacing: 0.04em;
+  }
+
+  .page-header__back {
+    color: var(--accent);
+    align-self: flex-start;
+    transition: color var(--dur) var(--ease);
+  }
+
+  .page-header__back:hover {
+    color: var(--accent-dim);
+  }
+
+  .page-header__label {
+    color: var(--muted);
+  }
+
+  .page-header__title {
+    font-size: var(--fs-7);
+    color: var(--text);
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+
+  .page-header__answer {
+    font-size: var(--fs-4);
+    color: var(--muted);
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .page-header__back {
+      transition: none;
+    }
+  }
+</style>

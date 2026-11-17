@@ -6,6 +6,7 @@ import SectionHeading from '../components/ui/SectionHeading.astro';
 import { hero } from '../data/hero';
 import { howWeWork } from '../data/how-we-work';
 import { sections } from '../data/sections';
+import { homeLinks } from '../data/pages';
 import { site } from '../data/site';
 import { joinNames } from '../lib/format';
 
@@ -57,12 +58,12 @@ function statusLabel(status: 'live' | 'building' | 'private'): string {
       <ol class="hww__steps">
         {howWeWork.steps.map((step) => (
           <li class="hww__step" data-reveal>
-            <p class="hww__label">{step.index} / {step.label}</p>
+            <p class="hww__label">{step.index}</p>
             <h3 class="hww__title">{step.title}</h3>
-            <p class="hww__desc">{step.description}</p>
           </li>
         ))}
       </ol>
+      <a class="hww__more" href={howWeWork.homeLink.href}>{howWeWork.homeLink.label}</a>
     </Container>
   </section>
 
@@ -160,11 +161,14 @@ function statusLabel(status: 'live' | 'building' | 'private'): string {
         <ul class="about__services" aria-label={sections.about.servicesLabel} role="list">
           {site.services.map((service) => (
             <li class="about__service">
-              <h3 class="about__service-name">{service.name}</h3>
+              <h3 class="about__service-name">
+                <a class="about__service-link" href={`/services/${service.id}/`}>{service.name}</a>
+              </h3>
               <p class="about__service-desc">{service.description}</p>
             </li>
           ))}
         </ul>
+        <a class="about__more" href={homeLinks.about.href}>{homeLinks.about.label}</a>
       </div>
     </Container>
   </section>
@@ -332,6 +336,8 @@ function statusLabel(status: 'live' | 'building' | 'private'): string {
     --hww-stagger-2: 80ms;
     --hww-stagger-3: 160ms;
     --hww-stagger-4: 240ms;
+    --hww-stagger-5: 320ms;
+    --hww-stagger-6: 400ms;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -360,20 +366,27 @@ function statusLabel(status: 'live' | 'building' | 'private'): string {
     overflow-wrap: anywhere;
   }
 
-  .hww__desc {
-    font-size: var(--fs-3);
-    color: var(--muted);
-    max-width: 60ch;
-    line-height: 1.65;
-    overflow-wrap: anywhere;
+  .hww__more,
+  .about__more {
+    display: inline-block;
+    margin-top: var(--space-6);
+    font-family: var(--font-mono);
+    font-size: var(--fs-2);
+    color: var(--accent);
+    transition: color var(--dur) var(--ease);
+  }
+
+  .hww__more:hover,
+  .about__more:hover {
+    color: var(--accent-dim);
   }
 
   @media (min-width: 768px) {
     .hww__step {
       display: grid;
-      grid-template-columns: var(--hww-label-col) 1fr 1fr;
+      grid-template-columns: var(--hww-label-col) 1fr;
       gap: var(--space-6);
-      align-items: start;
+      align-items: baseline;
     }
   }
 
@@ -382,6 +395,8 @@ function statusLabel(status: 'live' | 'building' | 'private'): string {
     .hww__step:nth-child(2) { transition-delay: var(--hww-stagger-2); }
     .hww__step:nth-child(3) { transition-delay: var(--hww-stagger-3); }
     .hww__step:nth-child(4) { transition-delay: var(--hww-stagger-4); }
+    .hww__step:nth-child(5) { transition-delay: var(--hww-stagger-5); }
+    .hww__step:nth-child(6) { transition-delay: var(--hww-stagger-6); }
   }
 
   /* ─── Section padding ─── */
@@ -769,6 +784,15 @@ function statusLabel(status: 'live' | 'building' | 'private'): string {
     font-size: var(--fs-4);
     color: var(--text);
     overflow-wrap: anywhere;
+  }
+
+  .about__service-link {
+    color: inherit;
+    transition: color var(--dur) var(--ease);
+  }
+
+  .about__service-link:hover {
+    color: var(--accent);
   }
 
   .about__service-desc {

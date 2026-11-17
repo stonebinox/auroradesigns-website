@@ -28,9 +28,10 @@ export const notFound = {
 } as const;
 
 export const llmsHowWeWork = [
-  'A knowledge repo is read first and written back to.',
-  'One AI plans, one writes the code, and others review it blind and attack the plan.',
-  'Zero assumptions: every claim is checked against running code.',
-  'Simplicity first.',
-  'A person approves every push.',
+  'The knowledge repo comes first: every engineer and AI tool reads it and writes back what it learns.',
+  'Several models, separate jobs: one AI plans, one writes the code, others review it and attack the plan.',
+  'The reviewers work blind: they get the task, not our theory of the problem.',
+  'Zero assumptions: every claim is unverified until the code is read or run.',
+  'Simplicity first: the smallest change that solves the real problem.',
+  'Circuit breaker: a person reviews and approves every push to the client codebase.',
 ] as const;

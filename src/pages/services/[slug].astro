@@ -1,0 +1,106 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageShell from '../../components/ui/PageShell.astro';
+import PageHeader from '../../components/ui/PageHeader.astro';
+import PageSection from '../../components/ui/PageSection.astro';
+import CtaLink from '../../components/ui/CtaLink.astro';
+import { site } from '../../data/site';
+import { servicePage } from '../../data/pages';
+import { absoluteUrl, faqNode, ids } from '../../lib/seo';
+
+export async function getStaticPaths() {
+  const work = await getCollection('work');
+  const workById = new Map(work.map((w) => [w.id, w]));
+  const serviceIds = new Set(site.services.map((s) => s.id));
+
+  return site.services.map((service) => {
+    const proof = service.proof.map((id) => {
+      const entry = workById.get(id);
+      if (!entry) throw new Error(`Service "${service.id}" has unknown proof id: ${id}`);
+      return { id: entry.id, title: entry.data.title };
+    });
+    const related = service.related.map((id) => {
+      const rel = site.services.find((s) => s.id === id);
+      if (!rel || !serviceIds.has(id)) {
+        throw new Error(`Service "${service.id}" has unknown related id: ${id}`);
+      }
+      return { id: rel.id, name: rel.name };
+    });
+    return {
+      params: { slug: service.id },
+      props: { service, proof, related },
+    };
+  });
+}
+
+const { service, proof, related } = Astro.props;
+
+const pageUrl = absoluteUrl(`/services/${service.id}/`);
+const crumbs = [
+  { name: site.brand, url: `${site.url}/` },
+  { name: service.name, url: pageUrl },
+];
+const jsonLd = [faqNode(pageUrl, service.faqs)];
+---
+
+<BaseLayout
+  title={service.name}
+  description={service.description}
+  crumbs={crumbs}
+  jsonLd={jsonLd}
+  page={{ mainEntityId: ids.service(service.id) }}
+>
+  <PageShell>
+    <PageHeader label={service.name} title={service.name} answer={service.answer} />
+
+    <PageSection id="audience" heading={servicePage.audienceHeading}>
+      <p>{service.audience}</p>
+    </PageSection>
+
+    <PageSection id="deliverables" heading={servicePage.deliverablesHeading}>
+      <ul>
+        {service.deliverables.map((item) => <li>{item}</li>)}
+      </ul>
+    </PageSection>
+
+    <PageSection id="proof" heading={servicePage.proofHeading}>
+      <p>{service.proofNote}</p>
+      <ul>
+        {proof.map((p) => (
+          <li><a class="text-link" href={`/work/${p.id}/`}>{p.title}</a></li>
+        ))}
+      </ul>
+    </PageSection>
+
+    <PageSection id="faq" heading={servicePage.faqHeading}>
+      <ul>
+        {service.faqs.map((f) => (
+          <li class="faq-item">
+            <h3>{f.q}</h3>
+            <p>{f.a}</p>
+          </li>
+        ))}
+      </ul>
+    </PageSection>
+
+    <PageSection id="related" heading={servicePage.relatedHeading}>
+      <ul>
+        {related.map((r) => (
+          <li><a class="text-link" href={`/services/${r.id}/`}>{r.name}</a></li>
+        ))}
+      </ul>
+    </PageSection>
+
+    <CtaLink href={servicePage.cta.href} label={servicePage.cta.label} />
+  </PageShell>
+</BaseLayout>
+
+<style>
+  .faq-item {
+    margin-bottom: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+</style>
