@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/ui/Container.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
+import CtaLink from '../components/ui/CtaLink.astro';
 import { hero } from '../data/hero';
 import { howWeWork } from '../data/how-we-work';
 import { sections } from '../data/sections';
@@ -44,7 +45,10 @@ function statusLabel(status: 'live' | 'building' | 'private'): string {
           <h1 id="hero-heading" class="hero__heading">{hero.headline}</h1>
         </div>
         <p class="hero__summary">{hero.subheadline}</p>
-        <a class="hero__cta" href={hero.cta.href}>{hero.cta.label}</a>
+        <div class="hero__actions">
+          <CtaLink href={hero.cta.href} label={hero.cta.label} />
+          <CtaLink href={site.whatsapp.href} label={site.whatsapp.cta} external variant="secondary" />
+        </div>
       </div>
     </Container>
   </section>
@@ -181,6 +185,9 @@ function statusLabel(status: 'live' | 'building' | 'private'): string {
       </SectionHeading>
       <div class="contact__content" data-reveal>
         <p class="contact__body">{sections.contact.body}</p>
+        <div class="contact__cta">
+          <CtaLink href={site.whatsapp.href} label={site.whatsapp.cta} external />
+        </div>
         <ul class="contact__links">
           <li><a class="contact__email" href={`mailto:${site.email}`}>{site.email}</a></li>
           <li><a class="contact__phone" href={site.phone.href}>{site.phone.display}</a></li>
@@ -197,8 +204,6 @@ function statusLabel(status: 'live' | 'building' | 'private'): string {
     --hero-bloom-w: 18rem;
     --hero-bloom-h: 12rem;
     --hero-bloom-blur: 40px;
-    --hero-cta-ring-inner: 2px;
-    --hero-cta-ring-outer: 5px;
     --hero-reveal-dur: 600ms;
     --hero-bloom-travel: clamp(6rem, 30vw, 22rem);
     min-height: 70vh;
@@ -225,7 +230,7 @@ function statusLabel(status: 'live' | 'building' | 'private'): string {
     min-width: 0;
   }
 
-  /* Heading wrap — contains the accent bloom behind the heading */
+  /* Heading wrap: contains the accent bloom behind the heading */
   .hero__heading-wrap {
     position: relative;
     isolation: isolate;
@@ -279,31 +284,14 @@ function statusLabel(status: 'live' | 'building' | 'private'): string {
     min-width: 0;
   }
 
-  /* CTA — accent filled, mono label */
-  .hero__cta {
-    display: inline-block;
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
     align-self: flex-start;
-    background: var(--accent);
-    color: var(--bg);
-    font-family: var(--font-mono);
-    font-size: var(--fs-2);
-    padding: var(--space-3) var(--space-5);
-    border-radius: var(--radius);
-    transition: background var(--dur) var(--ease);
   }
 
-  .hero__cta:hover {
-    background: var(--accent-dim);
-  }
-
-  /* Override global focus ring for accent button — use bg gap so ring is visible */
-  .hero__cta:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 var(--hero-cta-ring-inner) var(--bg), 0 0 0 var(--hero-cta-ring-outer) var(--accent);
-    border-radius: var(--radius);
-  }
-
-  /* ─── Scroll reveal — progressive enhancement only ─── */
+  /* ─── Scroll reveal: progressive enhancement only ─── */
   @media (prefers-reduced-motion: no-preference) {
     :global(.js) [data-reveal] {
       opacity: 0;
@@ -652,7 +640,7 @@ function statusLabel(status: 'live' | 'building' | 'private'): string {
     overflow-wrap: anywhere;
   }
 
-  /* Status badge — text label is authoritative; color is supplementary */
+  /* Status badge: text label is authoritative; color is supplementary */
   .product-card__status {
     font-family: var(--font-mono);
     font-size: var(--fs-2);
@@ -838,6 +826,10 @@ function statusLabel(status: 'live' | 'building' | 'private'): string {
     overflow-wrap: anywhere;
   }
 
+  .contact__cta {
+    margin-top: var(--space-6);
+  }
+
   .contact__links {
     list-style: none;
     padding: 0;
@@ -850,7 +842,8 @@ function statusLabel(status: 'live' | 'building' | 'private'): string {
 
   .contact__email {
     font-family: var(--font-mono);
-    font-size: var(--fs-4);
+    font-size: clamp(var(--fs-2), 5.2vw, var(--fs-4));
+    overflow-wrap: anywhere;
     color: var(--accent);
     text-decoration: none;
     transition: color var(--dur) var(--ease);

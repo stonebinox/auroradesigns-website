@@ -197,6 +197,28 @@ for (const file of htmlFiles) {
 }
 if (llms !== null) guard('llms.txt', llms);
 
+const EM_DASH = '\u2014';
+const TEXT_FILE = /\.(html|txt|xml|css|js|mjs|json|svg|webmanifest)$/i;
+const SOURCE_FILE = /\.(html|txt|xml|css|js|mjs|json|svg|webmanifest|ts|astro|md)$/i;
+const projectRoot = resolve(import.meta.dirname, '..');
+const sourceFiles = ['src', 'scripts', 'public']
+  .map((d) => join(projectRoot, d))
+  .filter((d) => existsSync(d))
+  .flatMap(walk)
+  .filter((f) => SOURCE_FILE.test(f));
+const dashTargets = [
+  ...files.filter((f) => TEXT_FILE.test(f)).map((f) => [rel(f), f]),
+  ...sourceFiles.map((f) => [relative(projectRoot, f), f]),
+];
+for (const [name, file] of dashTargets) {
+  const text = read(file);
+  const i = text.indexOf(EM_DASH);
+  if (i !== -1) {
+    const s = text.slice(Math.max(0, i - 40), i + 41).replace(/\s+/g, ' ');
+    fail(name, `contains an em dash (U+2014): ...${s}...`);
+  }
+}
+
 if (failures.length) {
   failures.forEach((m) => console.error(`FAIL ${m}`));
   console.error(`check-seo: ${failures.length} failure(s) in ${htmlFiles.length} page(s)`);

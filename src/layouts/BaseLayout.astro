@@ -34,7 +34,7 @@ const {
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? site.url);
-const pageTitle = title === site.brand ? site.brand : `${title} — ${site.brand}`;
+const pageTitle = title === site.brand ? site.brand : `${title} | ${site.brand}`;
 const ogImageURL = new URL(ogImage, canonicalURL);
 const pageUrl = canonicalURL.href;
 const graph = buildGraph({

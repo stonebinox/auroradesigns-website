@@ -9,6 +9,6 @@ export const hero: HeroData = {
   eyebrow: 'Software architecture & engineering consultancy',
   headline: 'Forward-deployed engineers for AI-native systems.',
   subheadline:
-    'We join your engineering team and own the messy, high-stakes work: AI agents and MCP integrations, backend architecture, and the systems around them — from discovery through production to adoption.',
+    "We join your engineering team and own the messy, high-stakes work: AI agents and MCP integrations, backend architecture, and the systems around them. Several AI models check each other's work, and a person approves every push.",
   cta: { label: 'Start an engagement', href: '/#contact' },
 };

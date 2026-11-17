@@ -2,29 +2,51 @@
 interface Props {
   href: string;
   label: string;
+  external?: boolean;
+  variant?: 'primary' | 'secondary';
 }
 
-const { href, label } = Astro.props;
+const { href, label, external = false, variant = 'primary' } = Astro.props;
 ---
 
-<a class="cta-link" href={href}>{label}</a>
+<a
+  class:list={['cta-link', { 'cta-link--secondary': variant === 'secondary' }]}
+  href={href}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener noreferrer' : undefined}
+>{label}</a>
 
 <style>
   .cta-link {
     --cta-ring-inner: 2px;
     --cta-ring-outer: 5px;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
     background: var(--accent);
     color: var(--bg);
     font-family: var(--font-mono);
     font-size: var(--fs-2);
     padding: var(--space-3) var(--space-5);
     border-radius: var(--radius);
-    transition: background var(--dur) var(--ease);
+    transition:
+      background var(--dur) var(--ease),
+      color var(--dur) var(--ease);
   }
 
   .cta-link:hover {
     background: var(--accent-dim);
+  }
+
+  .cta-link--secondary {
+    background: transparent;
+    color: var(--accent);
+    box-shadow: inset 0 0 0 var(--border-width) var(--accent);
+  }
+
+  .cta-link--secondary:hover {
+    background: var(--accent);
+    color: var(--bg);
   }
 
   .cta-link:focus-visible {

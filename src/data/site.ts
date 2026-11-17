@@ -25,6 +25,7 @@ export interface SiteData {
     display: string;
     href: string;
   };
+  whatsapp: { label: string; cta: string; href: string };
   location: string;
   citationLocation: string;
   countries: string[];
@@ -53,7 +54,14 @@ const countries = [
   'India',
 ];
 
+const citationLocation = 'Bangalore, India (remote, worldwide)';
+
 const email = 'contact@auroradesignshq.com';
+
+const phone = {
+  display: '+91 63600 58954',
+  href: 'tel:+916360058954',
+};
 
 const countryList = `${countries.slice(0, -1).join(', ')} and ${countries[countries.length - 1]}`;
 
@@ -212,12 +220,14 @@ export const site: SiteData = {
   legalName: 'Aurora Designs LLP',
   url: 'https://www.auroradesignshq.com',
   email,
-  phone: {
-    display: '+91 63600 58954',
-    href: 'tel:+916360058954',
+  phone,
+  whatsapp: {
+    label: 'WhatsApp',
+    cta: 'Message us on WhatsApp',
+    href: `https://wa.me/${phone.href.replace(/\D/g, '')}`,
   },
-  location: 'Bangalore, India — remote, worldwide',
-  citationLocation: 'Bangalore, India (remote, worldwide)',
+  location: citationLocation,
+  citationLocation,
   countries,
   social: [],
   entity,

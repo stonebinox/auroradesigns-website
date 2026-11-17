@@ -6,14 +6,14 @@ year: 2025
 role: "Forward-deployed engineering"
 stack: ["React", "TypeScript", "GraphQL", "AWS Lambda", "Gemini"]
 tags: ["AI-driven workflows", "Systems integration", "Platform rebuild"]
-summary: "Rebuilt a human-mediated talent-matching service into a self-serve, AI-driven recruiter workflow — integrating across the talent network, recruiter pipeline, hiring flow, and client base, on top of a live production codebase during an acquisition-scale migration."
+summary: "Rebuilt a human-mediated talent-matching service into a self-serve, AI-driven recruiter workflow, integrating across the talent network, recruiter pipeline, hiring flow, and client base, on top of a live production codebase during an acquisition-scale migration."
 featured: false
 order: 3
 ---
 
 ## Context
 
-The company ran a human-mediated talent-matching service and was being absorbed into a larger parent's legacy infrastructure during an acquisition — an environment with an existing production codebase and a live user base, not a greenfield build.
+The company ran a human-mediated talent-matching service and was being absorbed into a larger parent's legacy infrastructure during an acquisition: an environment with an existing production codebase and a live user base, not a greenfield build.
 
 ## Approach
 

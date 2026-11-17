@@ -64,6 +64,7 @@ export const GET: APIRoute = async () => {
     '',
     `- Email: ${site.email}`,
     `- Phone: ${site.phone.display}`,
+    `- WhatsApp: ${site.whatsapp.href}`,
     `- Website: ${site.url}/`,
     '',
   ];

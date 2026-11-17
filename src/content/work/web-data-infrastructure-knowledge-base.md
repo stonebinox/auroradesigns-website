@@ -6,7 +6,7 @@ year: 2025
 role: "Forward-deployed engineering"
 stack: ["Node", "Python", "Redis", "MongoDB", "Kubernetes", "RabbitMQ", "PostgreSQL"]
 tags: ["Knowledge systems", "AI-native tooling", "Developer onboarding"]
-summary: "A model-agnostic company knowledge base — works with Claude, Codex, or Copilot — that captures senior engineers' system reasoning and onboards new hires onto complex service repos. Adopted and actively contributed to by the team."
+summary: "A model-agnostic company knowledge base (works with Claude, Codex, or Copilot) that captures senior engineers' system reasoning and onboards new hires onto complex service repos. Adopted and actively contributed to by the team."
 featured: false
 order: 2
 ---
@@ -17,7 +17,7 @@ Embedded with a distributed engineering team where critical system knowledge liv
 
 ## Approach
 
-Interviewed the engineers to extract the reasoning behind their systems and built a model-agnostic knowledge base — one that works with Claude, Codex, or Copilot.
+Interviewed the engineers to extract the reasoning behind their systems and built a model-agnostic knowledge base: one that works with Claude, Codex, or Copilot.
 
 ## Outcome
 

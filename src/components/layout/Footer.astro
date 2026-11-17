@@ -20,6 +20,14 @@ const year = new Date().getFullYear();
         <a href={site.phone.href} class="site-footer__link site-footer__muted">
           {site.phone.display}
         </a>
+        <a
+          href={site.whatsapp.href}
+          class="site-footer__link site-footer__muted"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {site.whatsapp.label}
+        </a>
         <span class="site-footer__location site-footer__muted">{site.location}</span>
       </div>
 
