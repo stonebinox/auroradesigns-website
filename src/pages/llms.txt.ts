@@ -19,7 +19,7 @@ export const GET: APIRoute = async () => {
     '',
     '## Services',
     '',
-    ...site.services.map((s) => `- ${s.name}: ${s.description}`),
+    ...site.services.map((s) => `- [${s.name}](${absoluteUrl(`/services/${s.id}/`)}): ${s.answer}`),
     '',
     '## Key pages',
     '',
@@ -39,7 +39,14 @@ export const GET: APIRoute = async () => {
     '',
     '## Founders',
     '',
-    ...site.founders.map((f) => `- ${f.name}, ${f.jobTitle}`),
+    ...site.founders.map((f) => {
+      const links = f.sameAs.map((u) => (u.includes('linkedin.com') ? `LinkedIn: ${u}` : u));
+      return links.length > 0 ? `- ${f.name}, ${f.jobTitle}. ${links.join(' ')}` : `- ${f.name}, ${f.jobTitle}`;
+    }),
+    '',
+    '## Official profiles',
+    '',
+    ...site.sameAs.map((u) => `- ${u}`),
     '',
     '## Common questions',
     '',
